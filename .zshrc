@@ -69,16 +69,22 @@ source <(fzf --zsh)
 # ║ ${PATH}                                                                    ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
+
+
 # ╔════════════════════════════════════════════════════════════════════════════╗
 # ║ Completions                                                               ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
-# autoload -U compinit; compinit
+autoload -U compaudit compinit
 
-source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# unsetopt menu_complete   # do not autoselect the first completion entry
+# unsetopt flowcontrol
+# setopt auto_menu         # show completion menu on successive tab press
+# setopt complete_in_word
+# setopt always_to_end
 
 # automatically load bash completion functions
-# autoload -U +X bashcompinit && bashcompinit
+autoload -U +X bashcompinit && bashcompinit
 
 # ╔════════════════════════════════════════════════════════════════════════════╗
 # ║ Autosuggestions                                                            ║
@@ -94,7 +100,6 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 # ║ GPG                                                                       ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
-GPG_TTY=$(tty)
 export GPG_TTY=$TTY
 
 # ╔════════════════════════════════════════════════════════════════════════════╗
@@ -102,13 +107,16 @@ export GPG_TTY=$TTY
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
 
+
 # ╔════════════════════════════════════════════════════════════════════════════╗
 # ║ ALIASES                                                                   ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
-alias l="eza"
-alias ll="eza -l"
-alias la="eza -a"
+alias l="eza -l"
+alias ls="eza -lg"
+alias ll="eza -la"
+alias la="eza -lahHgnuU"
+alias las="eza -las"
 alias z="zoxide"
 alias cat="bat"
 alias find="fd"
@@ -130,7 +138,6 @@ alias gl='git pull'
 alias grb='git rebase'
 alias gm='git merge'
 
-
 # ╔════════════════════════════════════════════════════════════════════════════╗
 # ║ Dotfiles management                                                       ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
@@ -139,6 +146,13 @@ export DOTFILES="${HOME}/projects/@lpldme/dotfiles"
 
 function dotfiles-update-remote() {
 	cp "${HOME}/.zshrc" "${DOTFILES}/.zshrc"
+
+	# mkdir -p "${DOTFILES}/usr/local/bin/"
+  	# rsync -avH \
+    	#   --include-from="${DOTFILES}/.include" \
+    	#   "/usr/local/" "${DOTFILES}/usr/local/"
+
+	gh extension list > "${DOTFILES}/gh_extension_list"
 
 	git -C "${DOTFILES}" commit -a -S
 	return 0
@@ -169,8 +183,8 @@ function update-tools() {
 	printf "Updating macOS tools ...\n"
 	brew update && brew upgrade
 
-	# printf "Updating gh extensions ...\n"
-	# gh extension upgrade --all
+	printf "\nUpdating gh extensions ...\n"
+	gh extension upgrade --all
 
 	printf "Updating Zsh plugins ...\n"
 	git -C ~/.zsh/zsh-autosuggestions pull
