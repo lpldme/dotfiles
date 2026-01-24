@@ -9,7 +9,7 @@ unset LSCOLORS
 
 export OS="$(uname | tr '[:upper:]' '[:lower:]')"
 
-function is_available {
+function __is_available {
   prog="${1}"
   os="${2}"
 
@@ -83,11 +83,11 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # UV
-is_available uv \
+__is_available uv \
 && eval "$(uv generate-shell-completion zsh)"
 
 # FZF
-is_available fzf \
+__is_available fzf \
 && source <(fzf --zsh)
 
 # OMZ
@@ -162,7 +162,7 @@ export GPG_TTY=$TTY
 # ║ ALIASES                                                                   ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
-is_available eza \
+__is_available eza \
 && alias l='eza -l' \
 && alias ls='eza -lg' \
 && alias ll='eza -la' \
@@ -170,7 +170,7 @@ is_available eza \
 && alias las='eza -las' 
 
 # https://github.com/ajeetdsouza/zoxide
-is_available zoxide \
+__is_available zoxide \
 && [ "${USER}" != "root" ] \
 && eval "$(zoxide init --cmd cd zsh)" \
 && alias z='zoxide'
