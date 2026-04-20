@@ -92,31 +92,34 @@ __is_available fzf \
 
 # OMZ
 ZSH_THEME=""
-plugins=()
-
-source $ZSH/oh-my-zsh.sh
+plugins=(
+  starship
+)
 
 # ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ ${PATH}                                                                    ║
+# ║${PATH}                                                                    ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
 # Ripgrep
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 
 # Go
-# go -env -w GOPATH="${HOME}/.go"
-# export PATH="$(go env GOPATH)/bin:${PATH}"
-# export GOTELEMTRY="off"
-# export GOPROXY="direct"
-# export GOTOOLCHAIN="local"
+go -env -w GOPATH="${HOME}/.go"
+export PATH="$(go env GOPATH)/bin:${PATH}"
+export GOTELEMTRY="off"
+export GOPROXY="direct"
+export GOTOOLCHAIN="local"
 
 # Cargo (Rust)
-# [ -d "${HOME}/.cargo/bin" ] \
-# && export PATH="${HOME}/.cargo/bin:${PATH}"
-# [ -e "${HOME}/.cargo/env" ] \
-# && source "${HOME}/.cargo.env"
+[ -d "${HOME}/.cargo/bin" ] \
+&& export PATH="${HOME}/.cargo/bin:${PATH}"
+
+[ -e "${HOME}/.cargo/env" ] \
+&& source "${HOME}/.cargo.env"
 
 # NPM
+export NPM_PACKAGES="${HOME}/.local/lib/node_modules"
+export PATH="${PATH}:${NPM_PACKAGES}/bin:${HOME}/.local/bin"
 
 # ╔════════════════════════════════════════════════════════════════════════════╗
 # ║ Completions                                                               ║
@@ -159,9 +162,10 @@ export GPG_TTY=$TTY
 
 
 # ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ ALIASES                                                                   ║
+# ║ LIASES                                                                    ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
+# https://github.com/eza-community/eza
 __is_available eza \
 && alias l='eza -l' \
 && alias ls='eza -lg' \
@@ -172,8 +176,8 @@ __is_available eza \
 # https://github.com/ajeetdsouza/zoxide
 __is_available zoxide \
 && [ "${USER}" != "root" ] \
-&& eval "$(zoxide init --cmd cd zsh)" \
-&& alias z='zoxide'
+&& eval "$(zoxide init --cmd z zsh)" \
+&& alias cdd=cdi
 
 # https://github.com/sharkdp/bat
 __is_available bat \
@@ -216,6 +220,16 @@ alias grb='git rebase'
 alias gm='git merge'
 
 # ╔════════════════════════════════════════════════════════════════════════════╗
+# ║ gh                                                                        ║
+# ╚════════════════════════════════════════════════════════════════════════════╝
+
+function gh() {
+  export GITHUB_TOKEN="$(pass show github/token)"
+  
+  command gh $@
+}
+
+# ╔════════════════════════════════════════════════════════════════════════════╗
 # ║ Dotfiles management                                                       ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
@@ -224,23 +238,20 @@ export DOTFILES="${HOME}/projects/@lpld/dotfiles"
 function dotfiles-update-remote() {
 	cp "${HOME}/.zshrc" "${DOTFILES}/.zshrc"
 
-	# rsync -avH \ 
-	#  --include-from="${DOTFILES}/.include" \
-	# "${XDG_CONFIG_HOME}/" "${DOTFILES}/.config/" --delete-before
+	rsync -avH \ 
+	  --include-from="${DOTFILES}/.include" \
+	  "${XDG_CONFIG_HOME}/" "${DOTFILES}/.config/" --delete-before
 
 	mkdir -p "${DOTFILES}/usr/local/bin/"
-  	# rsync -avH \
-    	#  --include-from="${DOTFILES}/.include" \
-    	#  "/usr/local/" "${DOTFILES}/usr/local/"
+  	rsync -avH \
+    	  --include-from="${DOTFILES}/.include" \
+    	  "/usr/local/" "${DOTFILES}/usr/local/"
 
-	mkdir -p "${DOTFILES}/usr/.local/share/applications/"
-	# rsync -avH \
+	cargo install --list > "${DOTFILES}/cargo_install_--list"
 
-	# cargo install --list > "${DOTFILES}/cargo_install_--list"
+	npm list -g --depth=0 > "${DOTFILES}/npm_list_-g_--depth_0"
 
-	# npm list -g --depth=0 > "${DOTFILES}/npm_list_-g_--depth_0"
-
-	# gh extension list > "${DOTFILES}/gh_extension_list"
+	gh extension list > "${DOTFILES}/gh_extension_list"
 
 	git -C "${DOTFILES}" commit -a -S
 	return 0
@@ -254,12 +265,11 @@ function dotfiles-update-local() {
 
 	cp "${DOTFILES}/.zshrc" "${HOME}/.zshrc"
  	
-	# rsync -avH \
-    	#  --include-from="${DOTFILES}/.include" \
-    	#  "${DOTFILES}/.config/" "${XDG_CONFIG_HOME}/"
+	 rsync -avH \
+    	   --include-from="${DOTFILES}/.include" \
+    	   "${DOTFILES}/.config/" "${XDG_CONFIG_HOME}/"
 	
 	cp "${DOTFILES}/usr/local/bin/"* /usr/local/bin/
-
   	return 0
 }
 
@@ -268,6 +278,9 @@ function dotfiles-update-local() {
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
 function update-tools() {
+	printf "Updating Rust tools ...\n"
+  	cargo install-update -a -g
+
 	printf "Updating macOS tools ...\n"
 	brew update && brew upgrade
 
