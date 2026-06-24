@@ -33,8 +33,8 @@ export LANG="en_US.UTF-8"
 
 export HOMEBREW_PREFIX="/opt/homebrew"
 export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
-export MANPATH="$HOMEBREW_PREFIX/share/man:$MANPATH"
-export INFOPATH="$HOMEBREW_PREFIX/share/info:$INFOPATH"
+# export MANPATH="$HOMEBREW_PREFIX/share/man:$MANPATH"
+# export INFOPATH="$HOMEBREW_PREFIX/share/info:$INFOPATH"
 
 export PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH"
 
@@ -104,22 +104,25 @@ plugins=(
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 
 # Go
-go -env -w GOPATH="${HOME}/.go"
-export PATH="$(go env GOPATH)/bin:${PATH}"
-export GOTELEMTRY="off"
-export GOPROXY="direct"
-export GOTOOLCHAIN="local"
+#go -env -w GOPATH="${HOME}/.go"
+#export PATH="$(go env GOPATH)/bin:${PATH}"
+#export GOTELEMTRY="off"
+#export GOPROXY="direct"
+#export GOTOOLCHAIN="local"
 
 # Cargo (Rust)
-[ -d "${HOME}/.cargo/bin" ] \
-&& export PATH="${HOME}/.cargo/bin:${PATH}"
+#[ -d "${HOME}/.cargo/bin" ] \
+#&& export PATH="${HOME}/.cargo/bin:${PATH}"
 
-[ -e "${HOME}/.cargo/env" ] \
-&& source "${HOME}/.cargo.env"
+#[ -e "${HOME}/.cargo/env" ] \
+#&& source "${HOME}/.cargo.env"
 
 # NPM
 export NPM_PACKAGES="${HOME}/.local/lib/node_modules"
 export PATH="${PATH}:${NPM_PACKAGES}/bin:${HOME}/.local/bin"
+
+# NymVPN
+export PATH="${PATH}:${HOME}/nym-vpn-client/nym-vpn-core/target/debug"
 
 # ╔════════════════════════════════════════════════════════════════════════════╗
 # ║ Completions                                                               ║
@@ -295,3 +298,5 @@ function update-tools() {
 
 __is_available startship \
 && eval "$(starship init zsh)"
+
+source "$ZSH/oh-my-zsh.sh"
