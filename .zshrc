@@ -36,8 +36,6 @@ export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
 # export MANPATH="$HOMEBREW_PREFIX/share/man:$MANPATH"
 # export INFOPATH="$HOMEBREW_PREFIX/share/info:$INFOPATH"
 
-export PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH"
-
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_DATA_HOME="${HOME}/.local/share"
@@ -82,23 +80,25 @@ export PASSWORD_STORE_DIR="${HOME}/cloud/library/pass"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
-# UV
-__is_available uv \
-&& eval "$(uv generate-shell-completion zsh)"
-
-# FZF
-__is_available fzf \
-&& source <(fzf --zsh)
-
 # OMZ
 ZSH_THEME=""
 plugins=(
-  starship
 )
+
+# IPFS
+export IPFS_PATH="${HOME}/.ipfs"
 
 # ╔════════════════════════════════════════════════════════════════════════════╗
 # ║${PATH}                                                                    ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
+
+# LD_LIBRARY_PATH
+export LD_LIBRARY_PATH="/usr/local/lib64:$LD_LIBRARY_PATH"
+
+# Python
+export PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH"
+#[ -e "${HOME}/.local/share/pyenv/bin/activate" ] \
+#&& source "${HOME}/.local/share/pyenv/bin/activate"
 
 # Ripgrep
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
@@ -111,18 +111,18 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 #export GOTOOLCHAIN="local"
 
 # Cargo (Rust)
-#[ -d "${HOME}/.cargo/bin" ] \
-#&& export PATH="${HOME}/.cargo/bin:${PATH}"
+# [ -d "${HOME}/.cargo/bin" ] \
+# && export PATH="${HOME}/.cargo/bin:${PATH}"
 
-#[ -e "${HOME}/.cargo/env" ] \
-#&& source "${HOME}/.cargo.env"
+# [ -e "${HOME}/.cargo/env" ] \
+# && source "${HOME}/.cargo.env"
 
 # NPM
 export NPM_PACKAGES="${HOME}/.local/lib/node_modules"
 export PATH="${PATH}:${NPM_PACKAGES}/bin:${HOME}/.local/bin"
 
 # NymVPN
-export PATH="${PATH}:${HOME}/nym-vpn-client/nym-vpn-core/target/debug"
+# export PATH="${PATH}:${HOME}/nym-vpn-client/nym-vpn-core/target/debug"
 
 # ╔════════════════════════════════════════════════════════════════════════════╗
 # ║ Completions                                                               ║
@@ -142,8 +142,17 @@ setopt auto_menu		# show completion menu on successive tab press
 # automatically load bash completion functions
 autoload -U +X bashcompinit && bashcompinit
 
+# UV
+__is_available uv \
+&& eval "$(uv generate-shell-completion zsh)" \
+&& eval "$(uvx --generate-shell-completion zsh)"
+
+# https://github.com/junegunn/fzf
+__is_available fzf \
+&& source <(fzf --zsh)
+
 # ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ Autosuggestions                                                            ║
+# ║Autosuggestions                                                            ║
 # ╚════════════════════════════════════════════════════════════════════════════╝
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
@@ -191,6 +200,18 @@ alias find='fd'
 # https://github.com/aristocratos/btop
 __is_available btop \
 && alias top='btop'
+
+# https://github.com/neovim/neovim
+__is_available nvim \
+&& alias vi=nvim \
+&& alias vim=nvim \
+
+# https://github.com/junegunn/fzf
+__is_available fzf \
+&& alias preview='fzf --preview="bat {} --color=always"'
+
+__is_available xdg-open linux \
+&& alias open='xdg-open'
 
 alias c='clear'
 
