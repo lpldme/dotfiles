@@ -106,7 +106,7 @@ export PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH"
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 
 # Go
-#go -env -w GOPATH="${HOME}/.go"
+go env -w GOPATH="${HOME}/.go"
 export PATH="$(go env GOPATH)/bin:${PATH}"
 export GOTELEMTRY="off"
 export GOPROXY="direct"
@@ -116,8 +116,8 @@ export GOTOOLCHAIN="local"
 [ -d "${HOME}/.cargo/bin" ] \
 && export PATH="${HOME}/.cargo/bin:${PATH}"
 
-#[ -e "${HOME}/.cargo/env" ] \
-#&& source "${HOME}/.cargo.env"
+[ -e "${HOME}/.cargo/env" ] \
+&& source "${HOME}/.cargo/env"
 
 # NPM
 export NPM_PACKAGES="${HOME}/.local/lib/node_modules"
