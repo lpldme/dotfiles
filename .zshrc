@@ -106,8 +106,8 @@ export PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH"
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 
 # Go
-go env -w GOPATH="${HOME}/go"
-export PATH="$(go env GOPATH)/bin:${PATH}"
+#go env -w GOPATH="${HOME}/go"
+export PATH="$PATH:$(go env GOPATH)/bin"
 export GOTELEMTRY="off"
 export GOPROXY="direct"
 export GOTOOLCHAIN="local"
