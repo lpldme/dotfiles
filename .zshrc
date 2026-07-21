@@ -300,7 +300,7 @@ function dotfiles-update-remote() {
 
 	npm list -g --depth=0 > "${DOTFILES}/npm_list_-g_--depth_0"
 
-	/bin/ls -1 ~/.go/bin/ \
+	/bin/ls -1 ~/go/bin/ \
     	  | while read -r bin; \
     	  do go version -m "${HOME}/go/bin/${bin}" \
     	  | grep '^[[:space:]]path' \
