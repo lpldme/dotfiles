@@ -3,9 +3,9 @@
 unset LS_COLORS
 unset LSCOLORS
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ Basi  s                                                                    ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |Basics                                  |
+# +----------------------------------------+
 
 export OS="$(uname | tr '[:upper:]' '[:lower:]')"
 
@@ -22,9 +22,9 @@ function __is_available {
   return "$?"
 }
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ Expor  s                                                                   ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |Exports                                 |
+# +----------------------------------------+
 
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -48,9 +48,9 @@ export XDG_PUBLICSHARE_DIR="${HOME}/shared/public"
 export XDG_DOCUMENTS_DIR="${HOME}/cloud/documents"
 export XDG_PICTURES_DIR="${HOME}/cloud/photos"
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ General confi g                                                            ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |General configs                         |
+# +----------------------------------------+
 
 export HISTFILE="${HOME}/.zsh_history"
 export HISTCONTROL="ignoredups:ignorespace"
@@ -69,19 +69,15 @@ setopt HIST_REDUCE_BLANKS
 export EDITOR='nano'
 export COLUMNS="80"
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ Programs & tool s                                                          ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |Programs & tools                        |
+# +----------------------------------------+
 
 # SSH
 export SSH_KEY_PATH="${HOME}/.ssh/id_ed25519"
 
 # Pass
 export PASSWORD_STORE_DIR="${HOME}/cloud/library/pass"
-
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # OMZ
 ZSH_THEME=""
@@ -92,9 +88,9 @@ plugins=(
 # IPFS
 export IPFS_PATH="${HOME}/.ipfs"
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║${PATH }                                                                    ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |${PATHS}                                |
+# +----------------------------------------+
 
 # Python
 export PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH"
@@ -126,9 +122,12 @@ export PATH="${PATH}:${NPM_PACKAGES}/bin:${HOME}/.local/bin"
 # NymVPN
 # export PATH="${PATH}:${HOME}/nym-vpn-client/nym-vpn-core/target/debug"
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ Completion s                                                               ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# mise
+eval "$(mise activate zsh)"
+
+# +----------------------------------------+
+# |Completions                             |
+# +----------------------------------------+
 
 # automatically load zsh completion functions
 autoload -Uz compinit && compinit zrecompile
@@ -154,14 +153,17 @@ setopt auto_menu
 # automatically load bash completion functions
 autoload -U +X bashcompinit && bashcompinit
 
-# https://docs.astral.sh/uv/getting-started/installation/#__tabbed_3_2
+# https://docs.astral.sh/uv/getting-started/installation/#shell-autocompletion
 __is_available uv \
 && eval "$(uv generate-shell-completion zsh)" \
 && eval "$(uvx --generate-shell-completion zsh)"
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║Autosuggestion s                                                            ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# docker
+FPATH="$HOME/.docker/completions:$FPATH"
+
+# +----------------------------------------+
+# |Autosuggestions                         |
+# +----------------------------------------+
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGESTIONS="${HOME}/.zsh/zsh-autosuggestions"
@@ -169,21 +171,20 @@ ZSH_COMPDUMP="${XDG_CACHE_HOME}/.zcompdump-${HOST}"
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ GP G                                                                       ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |GPG                                     |
+# +----------------------------------------+
 
 export GPG_TTY=$TTY
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ SS H                                                                       ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |SSH                                     |
+# +----------------------------------------+
 
 
-
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║A LIAS S                                                                    ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |ALIASES                                 |
+# +----------------------------------------+
 
 # https://github.com/eza-community/eza
 __is_available eza \
@@ -242,9 +243,9 @@ alias bookmark="git -C ${JRNL} checkout dev \
   && git -C ${JRNL} add bookmarks \
   && git -C ${JRNL} commit -S"
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ Git                                                                       ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |Git                                     |
+# +----------------------------------------+
 
 alias ga='git add'
 alias ga.='ga .'
@@ -268,9 +269,9 @@ alias grb='git rebase'
 
 alias gm='git merge'
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ gh                                                                        ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |gh                                      |
+# +----------------------------------------+
 
 function gh() {
   export GITHUB_TOKEN="$(pass show github/token)"
@@ -278,9 +279,9 @@ function gh() {
   command gh $@
 }
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ Dotfiles management                                                       ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |Dotfiles management                     |
+# +----------------------------------------+
 
 export DOTFILES="${HOME}/projects/@lpld/dotfiles"
 
@@ -332,9 +333,9 @@ function dotfiles-update-local() {
   	return 0
 }
 
-# ╔════════════════════════════════════════════════════════════════════════════╗
-# ║ update-tools                                                               ║
-# ╚════════════════════════════════════════════════════════════════════════════╝
+# +----------------------------------------+
+# |Tools management                        |
+# +----------------------------------------+
 
 function update-tools() {
 	printf "Updating Rust tools ...\n"
