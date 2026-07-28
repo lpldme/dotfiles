@@ -292,10 +292,10 @@ function dotfiles-update-remote() {
 	  --include-from="${DOTFILES}/.include" \
 	  "${XDG_CONFIG_HOME}/" "${DOTFILES}/.config/" --delete-before
 
-	mkdir -p "${DOTFILES}/usr/local/bin/"
-  	rsync -avH \
-    	  --include-from="${DOTFILES}/.include" \
-    	  "/usr/local/" "${DOTFILES}/usr/local/"
+	#mkdir -p "${DOTFILES}/usr/local/bin/"
+  	#rsync -avH \
+    	#  --include-from="${DOTFILES}/.include" \
+    	#  "/usr/local/" "${DOTFILES}/usr/local/"
 
 	cargo install --list > "${DOTFILES}/cargo_install_--list"
 
@@ -329,7 +329,7 @@ function dotfiles-update-local() {
     	   --include-from="${DOTFILES}/.include" \
     	   "${DOTFILES}/.config/" "${XDG_CONFIG_HOME}/"
 
-	cp "${DOTFILES}/usr/local/bin/"* /usr/local/bin/
+	#cp "${DOTFILES}/usr/local/bin/"* /usr/local/bin/
   	return 0
 }
 
@@ -351,7 +351,7 @@ function update-tools() {
     	  | sort \
     	  | uniq \
     	  | xargs -I{} go install {}@latest; done
-y
+
 	printf "Updating macOS tools ...\n"
 	brew update && brew upgrade
 
