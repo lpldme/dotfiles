@@ -122,9 +122,6 @@ export PATH="${PATH}:${NPM_PACKAGES}/bin:${HOME}/.local/bin"
 # NymVPN
 # export PATH="${PATH}:${HOME}/nym-vpn-client/nym-vpn-core/target/debug"
 
-# mise
-eval "$(mise activate zsh)"
-
 # +----------------------------------------+
 # |Completions                             |
 # +----------------------------------------+
@@ -204,7 +201,6 @@ __is_available eza \
 #&& alias la='eza -lahHgnuU' \
 #&& alias las='eza -las' \
 
-
 # https://github.com/ajeetdsouza/zoxide
 __is_available zoxide \
 && [ "${USER}" != "root" ] \
@@ -242,6 +238,12 @@ alias bookmark="git -C ${JRNL} checkout dev \
   && nano ${JRNL}/bookmarks/index.md \
   && git -C ${JRNL} add bookmarks \
   && git -C ${JRNL} commit -S"
+
+# https://github.com/tomnomnom/gron
+alias ungron="gron --ungron"
+
+# https://github.com/stevespringett/disable-webassembly
+alias chromium='open /Applications/Chromium.app --args --js-flags=--noexpose_wasm'
 
 # +----------------------------------------+
 # |Git                                     |
@@ -295,7 +297,7 @@ function dotfiles-update-remote() {
 	#mkdir -p "${DOTFILES}/usr/local/bin/"
   	#rsync -avH \
     	#  --include-from="${DOTFILES}/.include" \
-    	#  "/usr/local/" "${DOTFILES}/usr/local/"
+	#"/usr/local/" "${DOTFILES}/usr/local/" --delete
 
 	cargo install --list > "${DOTFILES}/cargo_install_--list"
 
@@ -368,3 +370,5 @@ __is_available startship \
 && eval "$(starship init zsh)"
 
 source "$ZSH/oh-my-zsh.sh"
+export PATH="/opt/homebrew/opt/node@24/bin:$PATH"
+eval "$(mise activate zsh)"
